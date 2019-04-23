@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.bean.Comment;
 import com.example.mapper.CommentMapper;
+import com.example.mapper.RouteMapper;
 import com.example.mapper.UserMapper;
 
 @Service
@@ -15,6 +16,12 @@ public class CommentService {
 	private CommentMapper commentMapper;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private RouteMapper routeMapper;
+	
+	public int getCommentScoreCount(int graId, int commentScore) {
+		return commentMapper.getCommentScoreCount(graId, commentScore);
+	}
 	
 	public int getCounts() {
 		return commentMapper.getCounts();
@@ -36,6 +43,7 @@ public class CommentService {
 		List<Comment> commentList = commentMapper.queryAllCommentsPager(start, count);
 		for (Comment comment : commentList) {
 			comment.setUser(userMapper.getById(comment.getUserId()).get(0));
+			comment.setGra(routeMapper.getGraByGraId(comment.getGraId()));
 		}
 		return commentList;
 	}
@@ -61,6 +69,7 @@ public class CommentService {
 		List<Comment> commentList = commentMapper.queryCommentsByGraId(graId, start, count);
 		for (Comment comment : commentList) {
 			comment.setUser(userMapper.getById(comment.getUserId()).get(0));
+			comment.setGra(routeMapper.getGraByGraId(comment.getGraId()));
 		}
 		return commentList;
 	}

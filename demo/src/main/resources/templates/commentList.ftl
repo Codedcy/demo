@@ -6,7 +6,7 @@
 		<!-- Basic -->
     	<meta charset="UTF-8" />
 
-		<title>Dashboard | Nadhif - Responsive Admin Template</title>
+		<title>景区智能推荐系统@HRBEU_DCY</title>
 		
 		<!-- Mobile Metas -->
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -92,6 +92,10 @@
 		<script src="../../assets/js/bootstrap-select.js"></script>
 		<link href="../../assets/css/bootstrap-select.css" rel="stylesheet" />
 		
+		<link href="../../assets/css/star-rating.css" rel="stylesheet" />
+		<script src="../../assets/js/star-rating.js"></script>
+		
+		
 		<script>
 		
 		function getPageOfMemo(page) {
@@ -117,19 +121,37 @@
 		                var html = "";
 		                html+='<div id="commentShow" name="commentShow" class="panel-body bk-bg-white bk-padding-top-10 bk-padding-bottom-10">';
 		                $.each(data.commentList, function(i, item) {
-							html+='<div class="media"><a class="pull-left bk-avatar"><img src="../images/';
+							html+='<div class="media"><div class="panel-body text-center pull-left"><div class="bk-avatar"><a class="pull-left bk-avatar"><img src="../images/';
 							html+=item.user.headUrl;
-							html+='" alt="" class="img-circle bk-img-60 bk-border-off" /></a><div class="media-body"><span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ';
+							html+='" alt="" class="img-circle bk-img-60 bk-border-off" /></a><div class="bk-padding-top-10"><strong class="bk-fg-primary">';
+							html+=item.user.userName;
+							html+='</strong></div></div></div><div class="media-body"><span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ';
 							html+=item.commentTime;
 							html+='</small></span><a><div class="media-heading bk-fg-primary"><strong class="bk-fg-primary"> ';
-							html+=item.user.userName;
+							html+=item.gra.graName;
 							html+='</strong></div></a><p>';
 							html+=item.commentText;
-							html+='</p></div></div><hr class="bk-margin-off" />';
+							html+='</p><label class="form-inline"><input id="graScole" name="graScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false"  readonly="readonly" value="';
+							html+=item.commetScole;
+							html+='" /></label></div></div><hr class="bk-margin-off" />';
 		                });
 		                html+='</div>';
 						$('#commentShow').replaceWith(html);
-		                
+						
+						$('.kv-uni-star').rating({
+				            theme: 'krajee-uni',
+				            filledStar: '&#x2605;',
+				            emptyStar: '&#x2606;'
+				        });
+				        $('.kv-uni-rook').rating({
+				            theme: 'krajee-uni',
+				            defaultCaption: '{rating} rooks',
+				            starCaptions: function (rating) {
+				                return rating == 1 ? 'One rook' : rating + ' rooks';
+				            },
+				            filledStar: '&#9820;',
+				            emptyStar: '&#9814;'
+				        });
 		 
 		                var element = $('#pageButton');
 		                var options = {
@@ -163,89 +185,20 @@
 		}
 		
 		 $(function(){
-			 
-			 getPageOfMemo(1);
-			 
-			
-			 
-			 
-				 $('#graId').change(function(){
-					 getPageOfMemo(1);
-					 /*
-					if($(this).val()=="请选择景区"){
-						
-						var param={};
-						
-						$.ajax({
-							url:"../comment/commentListAjax",
-							type:"POST",
-							data:param,
-							dataType:"json",
-							success:function(data){
-								var html ="";
-								html+='<div id="commentShow" name="commentShow" class="panel-body bk-bg-white bk-padding-top-10 bk-padding-bottom-10">';
-								for(var i=0;i<data.commentList.length;i++){
-									html+='<div class="media"><a class="pull-left bk-avatar"><img src="../images/';
-									html+=data.commentList[i].user.headUrl;
-									html+='" alt="" class="img-circle bk-img-60 bk-border-off" /></a><div class="media-body"><span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ';
-									html+=data.commentList[i].commentTime;
-									html+='</small></span><a><div class="media-heading bk-fg-primary"><strong class="bk-fg-primary"> ';
-									html+=data.commentList[i].user.userName;
-									html+='</strong></div></a><p>';
-									html+=data.commentList[i].commentText;
-									html+='</p></div></div><hr class="bk-margin-off" />';
-								}
-								html+='</div>';
-								$('#commentShow').replaceWith(html);
-							},
-							error:function(){
-								alert("网络异常");
-							}
-						});
-					}else{
-						var param ={};
-						param.graId=$(this).val();
-						$.ajax({
-							url:"../comment/commentListByGraId",
-							type:"POST",
-							data:param,
-							dataType:"json",
-							success:function(data){
-								var html ="";
-								html+='<div id="commentShow" name="commentShow" class="panel-body bk-bg-white bk-padding-top-10 bk-padding-bottom-10">';
-								for(var i=0;i<data.commentList.length;i++){
-									html+='<div class="media"><a class="pull-left bk-avatar"><img src="../images/';
-									html+=data.commentList[i].user.headUrl;
-									html+='" alt="" class="img-circle bk-img-60 bk-border-off" /></a><div class="media-body"><span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ';
-									html+=data.commentList[i].commentTime;
-									html+='</small></span><a><div class="media-heading bk-fg-primary"><strong class="bk-fg-primary"> ';
-									html+=data.commentList[i].user.userName;
-									html+='</strong></div></a><p>';
-									html+=data.commentList[i].commentText;
-									html+='</p></div></div><hr class="bk-margin-off" />';
-								}
-								html+='</div>';
-								$('#commentShow').replaceWith(html);
-							},
-							error:function(){
-								alert("网络异常");
-							}
-						});
-					}
-					
-					 */
-				 });
-				
+			 getPageOfMemo(1);	 
+			 $('#graId').change(function(){
+				 getPageOfMemo(1);
 			 });
+			
+		 });
 			function commentSubmit(){
 				if($('#graId').val()=="请选择景区"){
 					alert("=====请选择景区=====");
 				}else{
-					getPageOfMemo(1);
-					/*
 					var param ={};
 					param.commentText=$('#commentText').val();
 					param.userId=$('#userId').val();
+					param.commetScole = $('#commetScole').val();
 					var currentDate = new Date();
 					param.commentTime= currentDate.toLocaleString();
 					param.graId = $('#graId').val();
@@ -255,28 +208,18 @@
 						data:param,
 						dataType:"json",
 						success:function(data){
-							var html ="";
-							html+='<div id="commentShow" name="commentShow" class="panel-body bk-bg-white bk-padding-top-10 bk-padding-bottom-10">';
-							for(var i=0;i<data.commentList.length;i++){
-								html+='<div class="media"><a class="pull-left bk-avatar"><img src="../images/';
-								html+=data.commentList[i].user.headUrl;
-								html+='" alt="" class="img-circle bk-img-60 bk-border-off" /></a><div class="media-body"><span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ';
-								html+=data.commentList[i].commentTime;
-								html+='</small></span><a><div class="media-heading bk-fg-primary"><strong class="bk-fg-primary"> ';
-								html+=data.commentList[i].user.userName;
-								html+='</strong></div></a><p>';
-								html+=data.commentList[i].commentText;
-								html+='</p></div></div><hr class="bk-margin-off" />';
+							if(data.status == 1){
+								getPageOfMemo(1);
+								$('#commentText').val('');
+							}else{
+								alert("系统错误");
 							}
-							html+='</div>';
-							$('#commentShow').replaceWith(html);
-							$('#commentText').val('');
 						},
 						error:function(){
 							alert("网络异常");
 						}
 					});
-					*/
+					
 				}
 			}
 
@@ -394,6 +337,11 @@
 											<option value="${gl.graId}">${gl.graName}</option>
 										</#list>                     
 									</select>
+									
+									<label class="form-inline">您对该景区的满意度： </label>
+									<label class="form-inline"><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="true" required="required" data-step=1 value="5"></label>
+									
+									
 										<div class="input-group">
 											<input type="text" id="commentText" name="commentText" class="form-control bk-noradius" />
 											<input type="hidden" id="userId" name="userId" value="${Session.user.userId}"  >
@@ -411,7 +359,7 @@
 								<div class="panel-body bk-bg-white text-center bk-padding-top-10 bk-padding-bottom-10">
 									<div class="row">
 										<div class="col-xs-8 text-left bk-vcenter">
-											<h6 class="bk-margin-off">CHATROOM</h6>
+											<h6 class="bk-margin-off">COMMENT</h6>
 										</div>
 										<div class="col-xs-4 bk-vcenter text-right">
 											<i class="fa fa-comments-o"></i>
@@ -423,9 +371,20 @@
 									<#list commentList as cl >
 									
 										<div class="media">
-											<a class="pull-left bk-avatar">
-												<img src="../images/${cl.user.headUrl}" alt="" class="img-circle bk-img-60 bk-border-off" />
-											</a>
+										
+											
+											<div class="panel-body text-center pull-left">								
+												<div class="bk-avatar">
+													<a class="pull-left bk-avatar">
+														<img src="../images/${cl.user.headUrl}" alt="" class="img-circle bk-img-60 bk-border-off" />
+													</a>
+												</div>
+												<div class="bk-padding-top-10">
+													<strong class="bk-fg-primary"> ${cl.user.userName}</strong>
+												</div>
+											</div>
+											
+											
 											<div class="media-body">
 												<span class="pull-right bk-fg-primary"><i class="fa fa-clock-o"></i><small> ${cl.commentTime}</small></span>
 												<a>
@@ -433,7 +392,9 @@
 														<strong class="bk-fg-primary"> ${cl.user.userName}</strong>
 													</div>
 												</a>
-												<p>${cl.commentText}</p>
+												<p>${cl.commentText}</p>									
+												<label class="form-inline"><input id="graScole" name="graScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="true" dir="rtl" readonly="readonly" value="3" ></label>
+												
 											</div>
 										</div>
 										<hr class="bk-margin-off" />
@@ -475,5 +436,5 @@
 		
 		
 	</body>
-	
+
 </html>

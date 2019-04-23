@@ -72,7 +72,7 @@ public class SpotInfoProduce {
 	public String graTransferToMatrix(int graId) {
 		StringBuffer result = new StringBuffer();
 		String urlStr = "https://api.map.baidu.com/routematrix/v2/walking?output=json&ak=pGcmVPay1pK0pmg0t8aDl5ir0VL2gxBS";
-		String outputPath = "C:\\Users\\10176\\Documents\\workspace-spring-tool-suite-4-4.1.2.RELEASE\\demo\\target\\classes\\spotInfo\\graMatrix"+graId+".txt"; 
+		String outputPath = "C:\\Users\\10176\\Documents\\workspace-spring-tool-suite-4-4.1.2.RELEASE\\demo\\target\\classes\\graMatrix"+graId+".txt"; 
 		String res = null;
 		File f = new File(outputPath);
 		Gson gson = new Gson();

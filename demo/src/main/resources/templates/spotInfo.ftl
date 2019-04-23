@@ -6,7 +6,7 @@
 <!-- Basic -->
 <meta charset="UTF-8" />
 
-<title>Dashboard | Nadhif - Responsive Admin Template</title>
+<title>景区智能推荐系统@HRBEU_DCY</title>
 
 <!-- Mobile Metas -->
 <meta name="viewport"
@@ -122,6 +122,19 @@
 	rel="stylesheet" media="screen" />
 <script src="../../assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
 <script src="../../assets/js/fileUtil.js"></script>
+<link href="../../assets/css/star-rating.css" rel="stylesheet" />
+<script src="../../assets/js/star-rating.js"></script>
+
+<style>
+.table>tbody>tr>td{
+    border:0px;
+    vertical-align: middle !important;
+    margin:5px;
+    padding:5px;
+    }
+
+
+</style>
 
 <script>
 	function graClassChange() {
@@ -170,6 +183,63 @@
 				alert("网络异常");
 			}
 		});
+		
+		
+		$.ajax({
+			traditional : true,
+			async:false,
+			url : "../comment/commentScoreCount",
+			type : "POST",
+			data : param,
+			dataType : "json",
+			success : function(data) {
+				//星级替换代码
+				$('#spotInfoPicture').attr("src","../images/spotInfoPicture/gra"+$('#graId').val()+".jpg");
+				$('#graName').text($('#graId option:selected').text());
+				$('#sumPeople').text(data.sumPeople+"");
+				$('#oneStar').css("width",data.oneStar+"%");
+				$('#oneStarText').text(data.oneStar+"%");
+				$('#twoStar').css("width",data.twoStar+"%");
+				$('#twoStarText').text(data.twoStar+"%");
+				$('#threeStar').css("width",data.threeStar+"%");
+				$('#threeStarText').text(data.threeStar+"%");
+				$('#fourStar').css("width",data.fourStar+"%");
+				$('#fourStarText').text(data.fourStar+"%");
+				$('#fiveStar').css("width",data.fiveStar+"%");
+				$('#fiveStarText').text(data.fiveStar+"%");
+				$('#averageScore').text(data.averageScore);
+				$('#averageStar').attr("value", data.averageScore+"");
+				$('#averageStar').rating('refresh',{ 
+					stars:5, 
+					min: 0, 
+					max: 5, 
+					step: 1, 
+					showClear: false, 
+					}); 
+					
+				
+				
+				$('.kv-uni-star').rating({
+		            theme: 'krajee-uni',
+		            filledStar: '&#x2605;',
+		            emptyStar: '&#x2606;'
+		        });
+		        $('.kv-uni-rook').rating({
+		            theme: 'krajee-uni',
+		            defaultCaption: '{rating} rooks',
+		            starCaptions: function (rating) {
+		                return rating == 1 ? 'One rook' : rating + ' rooks';
+		            },
+		            filledStar: '&#9820;',
+		            emptyStar: '&#9814;'
+		        });
+		        //$('.caption').css("display","none");
+			},
+			error : function() {
+				console.log("id");
+				alert("网络异常");
+			}
+		});
 	}
 	
 	function aprioriClick(id,c){
@@ -208,7 +278,7 @@
 	</div>
 	<!-- End: Header -->
 	<div class="copyrights">
-		Collect from <a href="http://www.cssmoban.com/">企业网站模板</a>
+		
 	</div>
 	<!-- Start: Content -->
 	<div class="container-fluid content">
@@ -304,12 +374,78 @@
 						<button class="btn btn-success aprioriButton" value="${gal.graName}" onclick="aprioriClick('${gal.graId}','${gal.graClass}')" >${gal.graName}</button>
 					</#list>	
 					
+					<div id="spotScaleShow" name="spotScaleShow"
+						class="row panel-body bk-bg-white"
+						style="padding-bottom: 0px; margin-bottom: 0px">
+						<div class="col-xs-6 col-sm-4 bk-bg-white" style="padding-bottom: 0px; margin-bottom: 0px" >
+						<br/>
+					         <img id="spotInfoPicture" src="../images/spotInfoPicture/gra1.jpg" style="width:100%" />
+					    </div>
+						<div class="col-xs-6 col-sm-4 bk-bg-white" style="padding-bottom: 0px; margin-bottom: 0px" >
+					         <p><h2><span id="graName">文化公园</span></h2></p>
+					         <div id="graScaleShow" name="graScaleShow">
+					         	<label class="form-inline"><h1><span id="averageScore">5.0</span></h1></label><label class="form-inline"><h4>分 </h4></label>
+								<label class="form-inline"><input id="averageStar" name="averageStar" data-size="lg" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="5"></label>
+								<label class="form-inline"> &nbsp;共<span id="sumPeople">999</span>人参与评分</label>
+								<table class="table table-hover" style="width:80%" >
+					         		<tr>
+					         			<td><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="5"></td>
+					         			<td><div class="progress bk-bg-white" style="width:100%">
+											<div id="fiveStar" class="progress-bar progress-bar-success" role="progressbar"
+												 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+												 style="width: 90%;">
+											</div>
+										</div></td>
+										<td><span id="fiveStarText" >90%</span></td>
+					         		</tr>
+					         		<tr>
+					         			<td><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="4"></td>
+					         			<td><div class="progress bk-bg-white" style="width:100%">
+											<div id="fourStar" class="progress-bar progress-bar-success" role="progressbar"
+												 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+												 style="width: 90%;">
+											</div>
+										</div></td>
+										<td><span id="fourStarText" >90%</span></td>
+					         		</tr>
+					         		<tr>
+					         			<td><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="3"></td>
+					         			<td><div class="progress bk-bg-white" style="width:100%">
+											<div id="threeStar" class="progress-bar progress-bar-success" role="progressbar"
+												 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+												 style="width: 90%;">
+											</div>
+										</div></td>
+										<td><span id="threeStarText" >90%</span></td>
+					         		</tr>
+					         		<tr>
+					         			<td style="width:20%; border:0px"><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="2"></td>
+					         			<td><div class="progress bk-bg-white" style="width:100%">
+											<div id="twoStar" class="progress-bar progress-bar-success" role="progressbar"
+												 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+												 style="width: 90%;">
+											</div>
+										</div></td>
+										<td style="width:10%"><span id="twoStarText" >90%</span></td>
+					         		</tr>
+					         		<tr>
+					         			<td><input id="commetScole" name="commetScole" data-size="sm" class="kv-uni-star rating-loading" data-show-clear="false" data-show-caption="false" readonly="readonly" value="1"></td>
+					         			<td><div class="progress bk-bg-white" style="width:100%">
+											<div id="oneStar" class="progress-bar progress-bar-success" role="progressbar"
+												 aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+												 style="width: 90%;">
+											</div>
+										</div></td>
+										<td><span id="oneStarText" >90%</span></td>
+					         		</tr>
+					         	</table>
+					         </div>
+					    </div>
+					</div>
+					
 					<div id="spotInfoShow" name="spotInfoShow"
 						class="panel-body bk-bg-white"
 						style="padding-bottom: 0px; margin-bottom: 0px">
-						<textarea name="introduction"
-							style="resize: none; font-size: 20px" class="form-control well"
-							rows="23" id="spotInfoText"></textarea>
 					</div>
 				</div>
 

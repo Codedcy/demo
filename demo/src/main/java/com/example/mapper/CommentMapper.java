@@ -39,8 +39,12 @@ public interface CommentMapper {
 	@Select("select * from comment where userId = #{userId} and graId = #{graId} order by commentTime desc")  
 	public List<Comment> queryCommentsByGraIdAndUserId(int graId, int userId);
 	
+	@Select("select ifnull(count(*),0) from comment where graId=#{graId} and commentScore = #{commentScore} ")  
+	public int getCommentScoreCount(int graId, int commentScore);
+	
+	
 	@Options(useGeneratedKeys=true,keyProperty="commentId")
-    @Insert("insert into comment(userId,commentTime,commentText,graId) values(#{userId},#{commentTime},#{commentText},#{graId})")  
+    @Insert("insert into comment(userId,commentTime,commentText,graId,commetScole) values(#{userId},#{commentTime},#{commentText},#{graId},#{commetScole})")  
 	public int addComment(Comment comment);
 	
 }

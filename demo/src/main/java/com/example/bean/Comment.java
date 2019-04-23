@@ -9,7 +9,34 @@ public class Comment {
 	private String commentText;
 	private int graId;
 	private User user;
+	private Gra gra;
+	private float commentScore;
 	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Comment [commentId=" + commentId + ", userId=" + userId + ", commentTime=" + commentTime
+				+ ", commentText=" + commentText + ", graId=" + graId + ", user=" + user + ", gra=" + gra
+				+ ", commentScore=" + commentScore + ", getCommentScore()=" + getCommentScore() + ", getGra()=" + getGra()
+				+ ", getUser()=" + getUser() + ", getGraId()=" + getGraId() + ", getCommentId()=" + getCommentId()
+				+ ", getUserId()=" + getUserId() + ", getCommentTime()=" + getCommentTime() + ", getCommentText()="
+				+ getCommentText() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+	public float getCommentScore() {
+		return commentScore;
+	}
+	public void setCommentScore(float commetScore) {
+		this.commentScore = commetScore;
+	}
+	public Gra getGra() {
+		return gra;
+	}
+	public void setGra(Gra gra) {
+		this.gra = gra;
+	}
 	public User getUser() {
 		return user;
 	}
